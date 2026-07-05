@@ -5,10 +5,8 @@ export class BudgetController {
   static getAll = async (req: Request, res: Response) => {
     try {
       const budgets = await Budget.findAll({
-        order: [
-          ['craetedAt', 'DESC']
-        ],
-        //TODO: Filtrar por el user 
+        order: [["craetedAt", "DESC"]],
+        //TODO: Filtrar por el user
       });
 
       res.json(budgets);
@@ -30,7 +28,20 @@ export class BudgetController {
   };
 
   static getById = async (req: Request, res: Response) => {
-    console.log("Get id");
+    try {
+      const { id } = req.params;
+      const budget = await Budget.findByPk(Number(id));
+
+      if (!budget) {
+        const error = new Error("Budget not found");
+        res.status(404).json({ error: error.message });
+        return;
+      }
+
+      res.json(budget);
+    } catch (error) {
+      res.status(500).json({ error: "There was an error" });
+    }
   };
 
   static updateById = async (req: Request, res: Response) => {
