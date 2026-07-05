@@ -56,13 +56,27 @@ export class BudgetController {
       }
 
       await budget.update(req.body);
-      res.json('Budget updated');
+      res.json("Budget updated");
     } catch (error) {
       res.status(500).json({ error: "There was an error" });
     }
   };
 
   static deleteById = async (req: Request, res: Response) => {
-    console.log("Desde Create");
+    try {
+      const { id } = req.params;
+      const budget = await Budget.findByPk(Number(id));
+
+      if (!budget) {
+        const error = new Error("Budget not found");
+        res.status(404).json({ error: error.message });
+        return;
+      }
+
+      await budget.destroy();
+      res.json('Budget deleted');
+    } catch (error) {
+      res.status(500).json({ error: "There was an error" });
+    }
   };
 }
