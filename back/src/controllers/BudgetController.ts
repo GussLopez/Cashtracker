@@ -1,0 +1,32 @@
+import type { Response, Request } from "express";
+import Budget from "../models/Budget";
+
+export class BudgetController {
+  static getAll = async (req: Request, res: Response) => {
+    console.log("Desde budget");
+  };
+
+  static create = async (req: Request, res: Response) => {
+    try {
+      const budget = new Budget(req.body);
+
+      await budget.save()
+
+      res.status(201).json('Budget created');
+    } catch (error) {
+      res.status(500).json({ error: "There was an error" });
+    }
+  };
+
+  static getById = async (req: Request, res: Response) => {
+    console.log("Get id");
+  };
+
+  static updateById = async (req: Request, res: Response) => {
+    console.log("Desde Create");
+  };
+
+  static deleteById = async (req: Request, res: Response) => {
+    console.log("Desde Create");
+  };
+}
