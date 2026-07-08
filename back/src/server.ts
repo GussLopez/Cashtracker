@@ -3,6 +3,7 @@ import colors from 'colors'
 import morgan from 'morgan'
 import { db } from './config/db';
 import budgetRouter from './router/budgetRouter';
+import authRouter from './router/budgetRouter';
 
 async function connectDb() {
   try {
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(morgan('dev'))
 
 app.use('/api/budgets', budgetRouter);
+app.use('/api/auth', authRouter);
 
 app.use(express.json())
 
