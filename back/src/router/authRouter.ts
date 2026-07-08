@@ -3,6 +3,7 @@ import { AuthController } from "../controllers/AuthController";
 import { body } from "express-validator";
 import { handleInputErrors } from "../middleware/validation";
 import { limiter } from "../config/limiter";
+import { authenticate } from "../middleware/auth";
 
 const router = Router();
 
@@ -26,6 +27,11 @@ router.post('/login',
     .notEmpty().withMessage('The password is required'),
   handleInputErrors,
   AuthController.login
+);
+
+router.get('/user',
+  authenticate,
+  AuthController.user  
 );
 
 export default router;

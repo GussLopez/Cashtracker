@@ -8,9 +8,9 @@ export class AuthController {
   static createAccount = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    const userExists = await User.findOne({ where: { email }});
+    const userExists = await User.findOne({ where: { email } });
     if (userExists) {
-      const error = new Error('Your email already registered');
+      const error = new Error("Your email already registered");
       return res.status(409).json({ error: error.message });
     }
 
@@ -19,29 +19,33 @@ export class AuthController {
       user.password = await hashPassword(password);
       user.token = generateToken();
       await user.save();
-      res.json('Account created');
+      res.json("Account created");
     } catch (error) {
-      res.status(500).json({ error: 'There was an error' });
+      res.status(500).json({ error: "There was an error" });
     }
-  }
+  };
 
   static login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ where: { email }});
+    const user = await User.findOne({ where: { email } });
     if (!user) {
-      const error = new Error('Account not found');
+      const error = new Error("Account not found");
       return res.status(409).json({ error: error.message });
     }
 
     const isPasswordCorrect = await checkPassword(password, user.password);
     if (!isPasswordCorrect) {
-      const error = new Error('Incorrect password');
+      const error = new Error("Incorrect password");
       return res.status(401).json({ error: error.message });
     }
 
     const token = generateJWT(user.id);
 
     res.json(token);
-   }
+  };
+
+  static user = async (req: Request, res: Response) => {
+    res.json(req.user);
+  };
 }
