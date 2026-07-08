@@ -1,4 +1,5 @@
-import { AllowNull, Column, DataType, Default, Model, Table, Unique } from "sequelize-typescript";
+import { AllowNull, Column, DataType, Default, HasMany, Model, Table, Unique } from "sequelize-typescript";
+import Budget from "./Budget";
 
 @Table({
   tableName: 'users'
@@ -33,8 +34,13 @@ class User extends Model {
   @Column({
     type: DataType.BOOLEAN
   })
-  declare confirm: string;
+  declare confirmed: string;
 
+  @HasMany(() => Budget, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE'
+  })
+  declare budgets: Budget[]
 }
 
 export default User
