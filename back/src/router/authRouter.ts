@@ -13,6 +13,7 @@ router.post('/create-account',
   body('email')
     .isEmail().withMessage('Invalid email'),
   handleInputErrors,
-AuthController.createAccount);
+  AuthController.createAccount
+);
 
 export default router;
