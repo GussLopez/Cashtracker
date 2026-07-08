@@ -16,4 +16,13 @@ router.post('/create-account',
   AuthController.createAccount
 );
 
+router.post('/login', 
+  body('email')
+    .isEmail().withMessage('Invalid email'),
+  body('password')
+    .notEmpty().withMessage('The password is required'),
+  handleInputErrors,
+  AuthController.login
+);
+
 export default router;
