@@ -13,6 +13,27 @@ describe('BudgetController.getAll', () => {
     const req = createRequest({
       method: 'GET',
       url: '/api/budgets',
+      user: { id: 1 }
+    })
+
+    const res = createResponse();
+
+    const updatedBudgets = budgets.filter(budget => budget.userId === req.user.id);
+    (Budget.findAll as jest.Mock).mockResolvedValue(updatedBudgets)
+    await BudgetController.getAll(req, res);
+
+    const data = res._getJSONData();
+
+    expect(data).toHaveLength(2);
+    expect(res.statusCode).toBe(200);
+    expect(res.status).not.toBe(404);
+  })
+
+  it('should retrieve 1 budgets for user with ID 2', async () => {
+    
+    const req = createRequest({
+      method: 'GET',
+      url: '/api/budgets',
       user: { id: 2 }
     })
 
@@ -25,6 +46,27 @@ describe('BudgetController.getAll', () => {
     const data = res._getJSONData();
 
     expect(data).toHaveLength(1);
+    expect(res.statusCode).toBe(200);
+    expect(res.status).not.toBe(404);
+  })
+
+  it('should retrieve 0 budgets for user with ID 10', async () => {
+    
+    const req = createRequest({
+      method: 'GET',
+      url: '/api/budgets',
+      user: { id: 10 }
+    })
+
+    const res = createResponse();
+
+    const updatedBudgets = budgets.filter(budget => budget.userId === req.user.id);
+    (Budget.findAll as jest.Mock).mockResolvedValue(updatedBudgets)
+    await BudgetController.getAll(req, res);
+
+    const data = res._getJSONData();
+
+    expect(data).toHaveLength(0);
     expect(res.statusCode).toBe(200);
     expect(res.status).not.toBe(404);
   })
