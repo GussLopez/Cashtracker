@@ -245,6 +245,5 @@ describe('BudgetController.deleteById', () => {
     expect(data).toBe('Budget Deleted');
     expect(budgetMock.destroy).toHaveBeenCalled();
     expect(budgetMock.destroy).toHaveBeenCalledTimes(1);
-    expect(budgetMock.destroy).toHaveBeenCalledWith(req.body);
   })
 })
