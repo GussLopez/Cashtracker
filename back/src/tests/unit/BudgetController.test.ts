@@ -215,7 +215,7 @@ describe('BudgetController.updateById', () => {
       body: { name: 'Budget uptaded', amount: 5000 }
     })
     const res = createResponse();
-    await BudgetController.getById(req, res);
+    await BudgetController.updateById(req, res);
 
     const data = res._getJSONData();
     expect(res.statusCode).toBe(200);
